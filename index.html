@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SchoolConnect - School App</title>
+<style>
+:root{--primary:#3157d5;--secondary:#eef2ff;--dark:#172033;--muted:#667085;--card:#fff;--bg:#f6f8fc;--danger:#d92d20}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--dark)}
+header{background:linear-gradient(135deg,#3157d5,#673ab7);color:#fff;padding:18px 5%;position:sticky;top:0;z-index:10;box-shadow:0 3px 15px #0002}
+.nav{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:15px}.brand{font-size:24px;font-weight:800}.nav button{border:0;background:#ffffff22;color:#fff;padding:10px 15px;border-radius:10px;cursor:pointer}
+.hero{max-width:1200px;margin:28px auto;padding:40px 5%;display:grid;grid-template-columns:1.5fr 1fr;gap:25px;align-items:center}
+.hero h1{font-size:46px;margin:0 0 12px}.hero p{color:var(--muted);font-size:18px;line-height:1.6}.hero .badge{display:inline-block;background:#e9edff;color:var(--primary);padding:8px 12px;border-radius:30px;font-weight:700}
+.hero-card{background:linear-gradient(145deg,#fff,#edf1ff);padding:30px;border-radius:24px;box-shadow:0 10px 35px #1d2b5a18}.hero-card .big{font-size:55px;font-weight:900;color:var(--primary)}
+section{max-width:1200px;margin:20px auto;padding:0 5%}h2{font-size:28px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:var(--card);padding:22px;border-radius:18px;box-shadow:0 4px 20px #1018280d}.icon{font-size:30px}.card h3{margin:12px 0 7px}.muted{color:var(--muted);line-height:1.5}
+.notice{display:flex;justify-content:space-between;gap:15px;align-items:center;border-left:5px solid var(--primary)}.date{font-weight:700;color:var(--primary)}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.day,.dow{background:#fff;padding:10px;text-align:center;border-radius:8px}.dow{background:var(--secondary);font-weight:700;color:var(--primary)}.event{background:#dfe6ff;color:#253b9b;font-size:11px;padding:3px;border-radius:5px;margin-top:3px}
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:18px}.phone{font-size:25px;font-weight:800;color:var(--primary)}
+footer{margin-top:45px;background:#172033;color:#fff;text-align:center;padding:28px}
+.modal{display:none;position:fixed;inset:0;background:#0008;z-index:30;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.panel{background:#fff;width:min(850px,100%);max-height:90vh;overflow:auto;border-radius:20px;padding:25px}.close{float:right;border:0;background:#eee;border-radius:8px;padding:8px 12px;cursor:pointer}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}.tabs button{border:0;background:#eee;padding:10px 14px;border-radius:9px;cursor:pointer}.tabs button.active{background:var(--primary);color:white}
+.admin-section{display:none}.admin-section.active{display:block}label{font-weight:700;display:block;margin:12px 0 6px}input,textarea,select{width:100%;padding:12px;border:1px solid #d0d5dd;border-radius:10px;font:inherit}textarea{min-height:90px}.btn{border:0;padding:11px 16px;border-radius:10px;background:var(--primary);color:#fff;cursor:pointer;font-weight:700}.btn.danger{background:var(--danger)}.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}.admin-list{margin-top:15px}.item{padding:13px;background:#f7f8fa;border-radius:10px;margin:8px 0;display:flex;justify-content:space-between;gap:10px;align-items:center}
+@media(max-width:760px){.hero{grid-template-columns:1fr}.hero h1{font-size:35px}.grid,.contact{grid-template-columns:1fr}.calendar{gap:3px}.day,.dow{padding:7px 2px;font-size:12px}.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div class="nav"><div class="brand">🏫 <span id="schoolNameTop">SchoolConnect</span></div><button onclick="openAdmin()">⚙️ Admin Panel</button></div></header>
+
+<main>
+<div class="hero">
+  <div><span class="badge">Welcome to our school</span><h1 id="heroTitle">SchoolConnect</h1><p id="schoolAbout">A modern school information portal for students, parents, teachers and visitors.</p></div>
+  <div class="hero-card"><div class="big">🎓</div><h2>Learn • Grow • Succeed</h2><p class="muted">Everything important about our school in one place.</p></div>
+</div>
+
+<section><h2>School Information</h2><div class="grid">
+<div class="card"><div class="icon">📚</div><h3>Academics</h3><p class="muted">Information about classes, subjects, curriculum and academic activities.</p></div>
+<div class="card"><div class="icon">🏆</div><h3>Activities</h3><p class="muted">Sports, cultural events, clubs, competitions and student activities.</p></div>
+<div class="card"><div class="icon">👨‍🏫</div><h3>Faculty</h3><p class="muted">Meet our experienced teachers and school staff.</p></div>
+<div class="card"><div class="icon">🚌</div><h3>Transport</h3><p class="muted">School bus routes, transport information and important guidelines.</p></div>
+<div class="card"><div class="icon">📢</div><h3>Notices</h3><p class="muted">Important announcements and updates for students and parents.</p></div>
+<div class="card"><div class="icon">📝</div><h3>Admissions</h3><p class="muted">Admission information, documents, procedures and contact details.</p></div>
+</div></section>
+
+<section><h2>Latest Notices</h2><div id="notices"></div></section>
+
+<section><h2>School Calendar</h2><div class="card"><div class="calendar" id="calendar"></div></div></section>
+
+<section><h2>Contact Us</h2><div class="contact">
+<div class="card"><h3>📞 Phone</h3><div class="phone" id="phone">+91 98765 43210</div><p class="muted">For school office enquiries.</p></div>
+<div class="card"><h3>📍 Address</h3><p id="address">Your School Address, Your City, India</p><p class="muted">Office hours: Monday–Saturday</p></div>
+</div></section>
+</main>
+<footer>© <span id="year"></span> <span id="schoolNameFoot">SchoolConnect</span> • School Information Portal</footer>
+
+<div class="modal" id="adminModal">
+<div class="panel">
+<button class="close" onclick="closeAdmin()">✕</button><h2>⚙️ Admin Panel</h2>
+<div id="loginBox"><p class="muted">Demo admin login. Change the password in the JavaScript before publishing.</p><label>Password</label><input type="password" id="adminPassword" placeholder="Enter admin password"><br><br><button class="btn" onclick="login()">Login</button></div>
+<div id="adminBox" style="display:none">
+<div class="tabs"><button class="active" onclick="tab('general',this)">General</button><button onclick="tab('noticesTab',this)">Notices</button><button onclick="tab('events',this)">Calendar</button></div>
+<div id="general" class="admin-section active">
+<label>School name</label><input id="aName">
+<label>About school</label><textarea id="aAbout"></textarea>
+<label>Phone number</label><input id="aPhone">
+<label>Address</label><textarea id="aAddress"></textarea><br><br><button class="btn" onclick="saveGeneral()">Save Changes</button>
+</div>
+<div id="noticesTab" class="admin-section">
+<label>Notice title</label><input id="nTitle" placeholder="e.g. Parent-Teacher Meeting">
+<label>Date</label><input id="nDate" type="date">
+<label>Details</label><textarea id="nText"></textarea><br><button class="btn" onclick="addNotice()">Add Notice</button>
+<div class="admin-list" id="noticeAdminList"></div>
+</div>
+<div id="events" class="admin-section">
+<div class="row"><div><label>Event date</label><input id="eDate" type="date"></div><div><label>Event title</label><input id="eTitle" placeholder="e.g. Sports Day"></div></div><br><button class="btn" onclick="addEvent()">Add Calendar Event</button>
+<div class="admin-list" id="eventAdminList"></div>
+</div>
+</div></div></div>
+
+<script>
+const ADMIN_PASSWORD="admin123"; // CHANGE THIS before publishing
+const defaults={name:"SchoolConnect",about:"A modern school information portal for students, parents, teachers and visitors.",phone:"+91 98765 43210",address:"Your School Address, Your City, India"};
+let data=JSON.parse(localStorage.getItem("schoolData")||"null")||{...defaults,notices:[{title:"Welcome to our school portal",date:new Date().toISOString().slice(0,10),text:"Check this page regularly for important school updates."}],events:[]};
+function save(){localStorage.setItem("schoolData",JSON.stringify(data))}
+function render(){schoolNameTop.textContent=data.name;schoolNameFoot.textContent=data.name;heroTitle.textContent=data.name;schoolAbout.textContent=data.about;phone.textContent=data.phone;address.textContent=data.address;year.textContent=new Date().getFullYear();
+notices.innerHTML=data.notices.length?data.notices.map(n=>`<div class="card notice"><div><h3>${esc(n.title)}</h3><p class="muted">${esc(n.text)}</p></div><div class="date">${n.date}</div></div>`).join(""):"<div class='card'>No notices yet.</div>";
+renderCalendar();renderAdminLists()}
+function renderCalendar(){let now=new Date(),y=now.getFullYear(),m=now.getMonth(),first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();let h=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(x=>`<div class="dow">${x}</div>`).join("");for(let i=0;i<first;i++)h+="<div></div>";for(let d=1;d<=days;d++){let ds=`${y}-${String(m+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;let ev=data.events.filter(e=>e.date===ds);h+=`<div class="day"><b>${d}</b>${ev.map(e=>`<div class="event">${esc(e.title)}</div>`).join("")}</div>`}calendar.innerHTML=h}
+function renderAdminLists(){noticeAdminList.innerHTML=data.notices.map((n,i)=>`<div class="item"><span><b>${esc(n.title)}</b><br>${n.date}</span><button class="btn danger" onclick="delNotice(${i})">Delete</button></div>`).join("");eventAdminList.innerHTML=data.events.map((e,i)=>`<div class="item"><span><b>${esc(e.title)}</b><br>${e.date}</span><button class="btn danger" onclick="delEvent(${i})">Delete</button></div>`).join("")}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function openAdmin(){adminModal.classList.add("show")}function closeAdmin(){adminModal.classList.remove("show")}
+function login(){if(adminPassword.value===ADMIN_PASSWORD){loginBox.style.display="none";adminBox.style.display="block";aName.value=data.name;aAbout.value=data.about;aPhone.value=data.phone;aAddress.value=data.address}else alert("Wrong password")}
+function tab(id,b){document.querySelectorAll(".admin-section").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));document.getElementById(id).classList.add("active");b.classList.add("active")}
+function saveGeneral(){data.name=aName.value||defaults.name;data.about=aAbout.value;data.phone=aPhone.value;data.address=aAddress.value;save();render();alert("Saved successfully!")}
+function addNotice(){if(!nTitle.value||!nDate.value)return alert("Add title and date.");data.notices.unshift({title:nTitle.value,date:nDate.value,text:nText.value});save();render();nTitle.value=nDate.value=nText.value=""}
+function delNotice(i){data.notices.splice(i,1);save();render()}
+function addEvent(){if(!eDate.value||!eTitle.value)return alert("Add event date and title.");data.events.push({date:eDate.value,title:eTitle.value});save();render();eDate.value=eTitle.value=""}
+function delEvent(i){data.events.splice(i,1);save();render()}
+render();
+</script>
+</body>
+</html>
